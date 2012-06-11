@@ -1,11 +1,18 @@
 
 class ItemsController < ApplicationController
 	before_filter :fetch_category, :except => [:show, :destroy]
+
 	def index
 		@items = @category.items.all
 		respond_to do |format|
-			format.json { render :json => @items }
-			format.html
+			format.json { render json: @items, except: :category_id }
+		end
+	end
+
+	def show
+		@item = Item.find(params[:id])
+		respond_to do |format|
+			format.json { render :json => @item }
 		end
 	end
 
