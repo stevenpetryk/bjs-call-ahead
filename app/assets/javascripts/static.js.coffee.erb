@@ -32,7 +32,7 @@ View =
 			Controller.loadCategory( category )
 
 		# Clicking on a favorite star
-		$('#menu li .favorite_toggle').live 'click', -> #### You should really get this code into the controller.
+		$('#menu li .favorite_toggle').live 'click', ->
 			itemid = $(this).closest('li').data('itemid')
 
 			Controller.setFavorite(itemid, !$(this).data('checked'), $(this))
@@ -48,7 +48,7 @@ View =
 
 		# Iterate through list, generating HTML
 		$.each(list, (k, item) ->
-			li = $('<li>')
+			li = $('<li>').attr('id', 'item_'+item.id)
 			li.data('itemid', item.id)
 
 			# Header
@@ -94,7 +94,13 @@ View =
 
 	# Toggles the given favorite star
 	toggleStar: (itemid, toggle) ->
-		
+		srcs =
+			'true' : '<%= asset_path 'favorited.png' %>'
+			'false': '<%= asset_path 'notfavorited.png' %>'
+
+		$('#item_'+itemid).find('.favorite_toggle img')
+			.attr('src', srcs[toggle.toString()])
+			.data('checked', toggle)
 
 Controller = 
 	loadCategory: (id) ->
@@ -113,12 +119,7 @@ Controller =
 		else
 			Model.removeFavorite(itemid)
 
-
-		star
-		# Check/uncheck
-		.data('checked', toggle)
-		# Change image
-		.find('img').attr 'src', srcs[toggle.toString()]
+		View.toggleStar(itemid, toggle)
 
 Model = 
 	findCategory: (id, callback) ->
@@ -138,7 +139,6 @@ Model =
 		}, null
 
 	removeFavorite: (id) ->
-		console.log('Deleting '+id)
 		$.ajax {
         url: '/favorites/'+id,
         type: 'post',
