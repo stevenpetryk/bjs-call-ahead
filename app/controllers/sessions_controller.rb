@@ -7,11 +7,11 @@ class SessionsController < ApplicationController
 			redirect_to root_url
 		else
 			flash[:notice] = "Invalid email address or password."
-			redirect_to new_session_path
+			redirect_to login_path, notice: "Invalid email address or password."
 		end
 	end
 	def destroy
 		session[:customer_id] = nil
-		redirect_to root_url, :notice => "Logged out."
+		redirect_to login_path, :notice => "Logged out."
 	end
 end

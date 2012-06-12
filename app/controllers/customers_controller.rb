@@ -12,6 +12,7 @@ class CustomersController < ApplicationController
 	def create
 		@customer = Customer.create(params[:customer])
 		if(@customer.save)
+			session[:customer_id] = @customer.id 
 			redirect_to root_path
 		else
 			render "new"

@@ -1,0 +1,133 @@
+
+$(document).ready ->
+	# Set up jQuery to use text/javascript requests only
+	jQuery.ajaxSetup({ 
+	  'beforeSend': (xhr) ->
+	  	xhr.setRequestHeader("Accept", "text/javascript")
+	})
+
+	# Initialize view
+	View.init()
+
+View = 
+	# Initializes the view in its entirety
+	init: ->
+		# Initialize viewport height
+		@fixInfinityEdges()
+
+		# Load the first category
+		Controller.loadCategory(1)
+
+		# Bind events
+		@bindAll()
+
+	# Binds all events
+	bindAll: ->
+		# Switching between categories
+		$('.category').click (e) ->
+			e.preventDefault()
+			
+			category = $(this).attr('id').split('_')[1]
+			Controller.loadCategory( category )
+
+		# Clicking on a favorite star
+		$('#menu li .favorite_toggle').live 'click', -> #### You should really get this code into the controller.
+			itemid = $(this).closest('li').data('itemid')
+
+			if $(this).data('checked')
+				Model.removeFavorite(itemid)
+				$(this)
+				# Mark as unchecked
+				.data('checked', false)
+				# Change image
+				.find('img').attr 'src', '<%= asset_path 'notfavorited.png' %>'
+			else 
+				Model.addFavorite(itemid)
+				$(this)
+				# Mark as checked
+				.data('checked', true)
+				#Change image
+				.find('img').attr 'src', '<%= asset_path 'favorited.png' %>'
+
+		# Window resizing
+		$(window).resize @fixInfinityEdges
+	
+	# Populates the central menu with a supplied list
+	populateMenu: (list) ->
+		menu = $('#menu')
+
+		ul = $('<ul>')
+
+		# Iterate through list, generating HTML
+		$.each(list, (k, item) ->
+			li = $('<li>')
+			li.data('itemid', item.id)
+
+			# Header
+			hDiv = $('<div>').addClass('header').appendTo(li)
+			$('<h1>').html(item.name)
+				.appendTo(hDiv)
+
+			# Price tag
+			pricetag = $('<p class="price">')
+			pricetag.html('$'+item.price.toFixed(2))
+			pricetag.prepend(
+					# Favorite toggle "checkbox"
+					$('<a class="favorite_toggle">').append(
+						$('<img>').attr 'src', ->
+							if item.favorite 
+							then "<%= asset_path 'favorited.png' %>"
+							else "<%= asset_path 'notfavorited.png' %>"
+					).data 'checked', item.favorite
+			).appendTo(hDiv)
+
+
+			# Description
+			$('<p class="desc">').html(item.description)
+				.appendTo(li)
+
+			# aaaaand append it all.
+			ul.append(li)
+		)
+
+		menu.html(ul)
+
+	# Highlights current #category li
+	highlightCategory: (id) ->
+		$('.category').parent().removeClass('current')
+		$('#category_'+id).parent().addClass('current')
+
+	# Resizes certain elements to stay at 100% height as the page height changes
+	fixInfinityEdges: ->
+		elements = $('#categories, #menu, #order')
+		idealHeight = 
+			$(window).height() - ( $('#footer').height() + $('#header').height() )
+		elements.height( idealHeight )
+
+Controller = 
+	loadCategory: (id) ->
+		Model.findCategory id, (data) ->
+			View.populateMenu(data)
+			View.highlightCategory(id)
+
+Model = 
+	findCategory: (id, callback) ->
+		$.getJSON '/categories/'+id+'/items.json', (data) ->
+			callback(data)
+
+	addFavorite: (id) ->
+		console.log('Creating '+id)
+		$.post '/favorites', {
+			'item_id': id
+		}, null
+
+	removeFavorite: (id) ->
+		console.log('Deleting '+id)
+		$.ajax {
+        url: '/favorites/'+id,
+        type: 'post',
+        dataType: 'script',
+        data: { '_method': 'delete' },
+        success: (data) ->  
+        	console.log(data)
+    }

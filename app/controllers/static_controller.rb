@@ -1,6 +1,10 @@
 
 class StaticController < ApplicationController
   def home
-  	@categories = Category.all
+  	if current_customer.nil?
+  		redirect_to login_path
+  	else
+  		@categories = Category.all
+  	end
   end
 end

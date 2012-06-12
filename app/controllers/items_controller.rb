@@ -5,7 +5,7 @@ class ItemsController < ApplicationController
 	def index
 		@items = @category.items.all
 		respond_to do |format|
-			format.json { render json: @items, except: :category_id }
+			format.json { render json: @items.to_json(except: :category_id, methods: [ :favorite ]) }
 		end
 	end
 

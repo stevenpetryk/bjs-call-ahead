@@ -1,0 +1,29 @@
+#hero
+	- if @customer.errors.any?
+		#error_explanation
+			%ul
+				- @customer.errors.full_messages.each do |msg|
+					%li= msg
+
+	= form_for(@customer, url: customers_path, method: :post) do |f|
+		.field
+			= f.label :name
+			= f.text_field :name
+		.field
+			= f.label :phone
+			= f.text_field :phone
+		.field
+			= f.label :zip
+			= f.text_field :zip
+		.field
+			= f.label :email
+			= f.text_field :email
+		.field
+			= f.label :password
+			= f.password_field :password
+		.field
+			= f.label :password_confirmation
+			= f.password_field :password_confirmation
+		.submit
+			= link_to "Already have an account?", login_path, class:'login_register'
+			= f.submit "Register"

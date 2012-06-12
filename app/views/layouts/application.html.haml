@@ -1,0 +1,17 @@
+!!! 5
+
+%html
+	%head
+		%title BJ's Order and Reserve
+		= stylesheet_link_tag    "application", :media => "all"
+		= javascript_include_tag "application"
+		= csrf_meta_tags
+
+	%body
+		#header
+			%a(href="/")= image_tag "logo-bjs.png"
+
+		#wrapper
+			= yield
+
+		= render 'layouts/footer'

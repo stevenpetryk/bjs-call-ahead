@@ -1,16 +1,17 @@
 Bjs::Application.routes.draw do
   get "static/home"
 
-  resources :sessions
-  resources :customers
+  resource :session,  only: [:new, :create, :destroy]
+  resources :customers,  only: [:new, :create, :destroy]
+  resources :favorites, only: [:create, :destroy]
 
   resources :categories, :shallow=>true do
     resources :items
   end
 
-  match 'register' => 'Customers#new'
+  match 'register' => 'customers#new', as: :register
 
-  match 'login' => 'Sessions#new'
+  match 'login' => 'sessions#new', as: :login
 
   root :to => 'Static#home'
 

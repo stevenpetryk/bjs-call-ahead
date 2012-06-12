@@ -1,0 +1,13 @@
+#categories
+	%ul
+		= render @categories
+	%ul
+		%li= link_to "Favorites", '#'
+	%ul
+		%li= link_to 'Log out', 'session', :confirm => 'Are you sure?', :method => :delete
+
+#menu
+	= current_customer.name
+
+#order
+	/ AJAX Inserts here
