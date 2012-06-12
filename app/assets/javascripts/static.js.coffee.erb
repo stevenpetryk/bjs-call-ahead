@@ -3,7 +3,7 @@ $(document).ready ->
 	# Set up jQuery to use text/javascript requests only
 	jQuery.ajaxSetup({ 
 	  'beforeSend': (xhr) ->
-	  	xhr.setRequestHeader("Accept", "text/javascript")
+	  	xhr.setRequestHeader("Accept", "application/json")
 	})
 
 	# Initialize view
@@ -26,28 +26,16 @@ View =
 		# Switching between categories
 		$('.category').click (e) ->
 			e.preventDefault()
-			
+
 			category = $(this).attr('id').split('_')[1]
+
 			Controller.loadCategory( category )
 
 		# Clicking on a favorite star
 		$('#menu li .favorite_toggle').live 'click', -> #### You should really get this code into the controller.
 			itemid = $(this).closest('li').data('itemid')
 
-			if $(this).data('checked')
-				Model.removeFavorite(itemid)
-				$(this)
-				# Mark as unchecked
-				.data('checked', false)
-				# Change image
-				.find('img').attr 'src', '<%= asset_path 'notfavorited.png' %>'
-			else 
-				Model.addFavorite(itemid)
-				$(this)
-				# Mark as checked
-				.data('checked', true)
-				#Change image
-				.find('img').attr 'src', '<%= asset_path 'favorited.png' %>'
+			Controller.setFavorite(itemid, !$(this).data('checked'), $(this))
 
 		# Window resizing
 		$(window).resize @fixInfinityEdges
@@ -104,16 +92,44 @@ View =
 			$(window).height() - ( $('#footer').height() + $('#header').height() )
 		elements.height( idealHeight )
 
+	# Toggles the given favorite star
+	toggleStar: (itemid, toggle) ->
+		
+
 Controller = 
 	loadCategory: (id) ->
 		Model.findCategory id, (data) ->
 			View.populateMenu(data)
 			View.highlightCategory(id)
 
+	setFavorite: (itemid, toggle, star) ->
+		srcs = {
+			'true' : '<%= asset_path 'favorited.png' %>'
+			'false': '<%= asset_path 'notfavorited.png' %>'
+		}
+
+		if toggle
+			Model.addFavorite(itemid)
+		else
+			Model.removeFavorite(itemid)
+
+
+		star
+		# Check/uncheck
+		.data('checked', toggle)
+		# Change image
+		.find('img').attr 'src', srcs[toggle.toString()]
+
 Model = 
 	findCategory: (id, callback) ->
-		$.getJSON '/categories/'+id+'/items.json', (data) ->
-			callback(data)
+		if id == 'favorites'
+			console.log('Model: fetching favorites...')
+			$.getJSON '/favorites', (data) ->
+				console.log(data)
+				callback(data)
+		else
+			$.getJSON '/categories/'+id+'/items.json', (data) ->
+				callback(data)
 
 	addFavorite: (id) ->
 		console.log('Creating '+id)

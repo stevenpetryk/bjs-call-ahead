@@ -13,6 +13,8 @@ Bjs::Application.routes.draw do
 
   match 'login' => 'sessions#new', as: :login
 
+  match 'favorites' => 'items#favorites'
+
   root :to => 'Static#home'
 
   # The priority is based upon order of creation:

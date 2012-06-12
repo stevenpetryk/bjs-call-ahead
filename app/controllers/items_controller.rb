@@ -1,6 +1,6 @@
 
 class ItemsController < ApplicationController
-	before_filter :fetch_category, :except => [:show, :destroy]
+	before_filter :fetch_category, :except => [:show, :destroy, :favorites]
 
 	def index
 		@items = @category.items.all
@@ -13,6 +13,13 @@ class ItemsController < ApplicationController
 		@item = Item.find(params[:id])
 		respond_to do |format|
 			format.json { render :json => @item }
+		end
+	end
+
+	def favorites
+		@items = current_customer.favorite_items
+		respond_to do |format|
+			format.json { render json: @items.to_json(except: :category_id, methods: [ :favorite ]) }
 		end
 	end
 
