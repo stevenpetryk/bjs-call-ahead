@@ -35,7 +35,7 @@ View =
 		$('#menu li .favorite_toggle').live 'click', ->
 			itemid = $(this).closest('li').data('itemid')
 
-			Controller.setFavorite(itemid, !$(this).data('checked'), $(this))
+			Controller.setFavorite(itemid, !$(this).data('checked'))
 
 		# Window resizing
 		$(window).resize @fixInfinityEdges
@@ -98,9 +98,11 @@ View =
 			'true' : '<%= asset_path 'favorited.png' %>'
 			'false': '<%= asset_path 'notfavorited.png' %>'
 
+		$('#item_'+itemid).find('.favorite_toggle')
+			.data('checked', toggle)
+
 		$('#item_'+itemid).find('.favorite_toggle img')
 			.attr('src', srcs[toggle.toString()])
-			.data('checked', toggle)
 
 Controller = 
 	loadCategory: (id) ->
@@ -108,7 +110,7 @@ Controller =
 			View.populateMenu(data)
 			View.highlightCategory(id)
 
-	setFavorite: (itemid, toggle, star) ->
+	setFavorite: (itemid, toggle) ->
 		srcs = {
 			'true' : '<%= asset_path 'favorited.png' %>'
 			'false': '<%= asset_path 'notfavorited.png' %>'
@@ -123,27 +125,22 @@ Controller =
 
 Model = 
 	findCategory: (id, callback) ->
-		if id == 'favorites'
-			console.log('Model: fetching favorites...')
-			$.getJSON '/favorites', (data) ->
-				console.log(data)
-				callback(data)
-		else
-			$.getJSON '/categories/'+id+'/items.json', (data) ->
-				callback(data)
+		url = 
+			if id == 'favorites' 
+				'/favorites'
+			else
+				'/categories/'+id+'/items'
+
+		$.getJSON url, (data) ->
+			callback(data)
 
 	addFavorite: (id) ->
-		console.log('Creating '+id)
-		$.post '/favorites', {
+		$.post '/favorites',
 			'item_id': id
-		}, null
 
 	removeFavorite: (id) ->
-		$.ajax {
+		$.ajax
         url: '/favorites/'+id,
         type: 'post',
         dataType: 'script',
-        data: { '_method': 'delete' },
-        success: (data) ->  
-        	console.log(data)
-    }
+        data: { '_method': 'delete' }
