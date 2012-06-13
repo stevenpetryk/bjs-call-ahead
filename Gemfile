@@ -11,7 +11,7 @@ gem 'valid_email'
 
 gem 'bcrypt-ruby'
 
-gem 'haml-rails'
+gem 'haml'
 
 # Gems used only for assets and not required
 # in production environments by default.
