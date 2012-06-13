@@ -5,6 +5,8 @@ Bjs::Application.routes.draw do
   resources :customers,  only: [:new, :create, :destroy]
   resources :favorites, only: [:create, :destroy]
 
+  resources :locations, only: [:index]
+
   resources :categories, :shallow=>true do
     resources :items
   end
