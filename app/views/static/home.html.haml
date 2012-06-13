@@ -7,7 +7,13 @@
 		%li= link_to 'Log out', 'session', :confirm => 'Are you sure?', :method => :delete
 
 #menu
-	= current_customer.name
 
 #order
-	/ AJAX Inserts here
+	%h1 Your Reservation
+	#reservation
+		%h2
+			= current_customer.name
+		%p<
+			Party of 
+			= number_field_tag :partysize, nil, :in => (1..9)
+			%em> (1-9)
