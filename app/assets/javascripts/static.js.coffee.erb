@@ -10,6 +10,9 @@ $(document).ready ->
 	View.init()
 
 View = 
+	# Pattern for disclaimer matching
+	disclaimerPattern: /\ \[\*\=(.+)\]/
+
 	# Initializes the view in its entirety
 	init: ->
 		# Initialize viewport height
@@ -50,6 +53,12 @@ View =
 		$.each(list, (k, item) ->
 			li = $('<li>').attr('id', 'item_'+item.id)
 			li.data('itemid', item.id)
+
+			# Process item name with disclaimers
+			item.name = item.name.replace(
+				View.disclaimerPattern, 
+				' <span class="tooltip" data-tooltip="$1">*</span>'
+			)
 
 			# Header
 			hDiv = $('<div>').addClass('header').appendTo(li)
