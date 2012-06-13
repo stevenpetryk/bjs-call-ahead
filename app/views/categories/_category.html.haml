@@ -1,3 +1,1 @@
-%li
-	= content_tag_for(:a, category, href: '#') do 
-		= category.name
+%li= content_tag_for(:a, category, href: '#') { category.name }
