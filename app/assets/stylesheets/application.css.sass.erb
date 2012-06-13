@@ -1,3 +1,11 @@
+// Colors
+$dark-red: #600
+
+// Borders
+$light-border: 1px solid #ccc
+$little-rounded: 5px
+$big-rounded: 10px
+
 *
 	padding: 0
 	margin: 0
@@ -8,7 +16,7 @@ a img
 
 body 
 	font: 1em Arial, Helvetica, sans-serif
-	background: #600
+	background: $dark-red
 
 	-ms-overflow-y: hidden
 	overflow-y: hidden
@@ -22,9 +30,9 @@ body
 		list-style: none
 	
 	li 
-		border-bottom-left-radius: 5px
+		border-bottom-left-radius: $little-rounded
+		border-top-left-radius: $little-rounded
 		background: rgba(255,53,53,.2)
-		border-top-left-radius: 5px
 		margin: 0px 0px 5px 10px
 		vertical-align: middle
 		&.current, &.current:hover 
@@ -55,15 +63,18 @@ body
 	box-shadow:         0px 0px 40px rgba(0, 0, 0, .5)
 	width: 600px
 	overflow-y: auto
-	border-top-left-radius: 10px
+	border-top-left-radius: $big-rounded
+
 	ul 
 		list-style: none
+
 		li 
 			padding: 10px
-			border-top: 1px solid #ccc
-			border-bottom: 1px solid #ccc
-			cursor: pointer
+			border-top: $light-border
+			border-bottom: $light-border
 			border-right: 4px solid white
+			cursor: pointer
+
 			&:hover 
 				border-color: #600
 				-webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, .5)
@@ -75,6 +86,12 @@ body
 			font-size: 1.2em
 			width: 70%
 			float: left
+			
+			.tooltip
+				color: #600
+				font-size: 1.5em
+				line-height: 20px
+				vertical-align: bottom
 		
 		p 
 			float: right
@@ -84,8 +101,8 @@ body
 			padding: 7px
 			font-style: italic
 			border-bottom: 2px solid #700
-			border-bottom-left-radius: 4px
-			border-bottom-right-radius: 4px
+			border-bottom-left-radius: $little-rounded
+			border-bottom-right-radius: $little-rounded
 			color: white
 		
 		a.favorite_toggle 
@@ -116,7 +133,7 @@ body
 		p 
 			font-weight: normal
 			margin-bottom: 10px
-			
+
 			input 
 				width: 40px
 				margin: 0 6px
