@@ -7,7 +7,7 @@ Bjs::Application.routes.draw do
 
   resources :locations, only: [:index]
 
-  resources :categories, :shallow=>true do
+  resources :categories do
     resources :items
   end
 

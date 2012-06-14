@@ -19,7 +19,7 @@ View =
 		@fixInfinityEdges()
 
 		# Load the first category
-		Controller.loadCategory(1)
+		# Controller.loadCategory(1)
 
 		# Bind events
 		@bindAll()
@@ -27,12 +27,12 @@ View =
 	# Binds all events
 	bindAll: ->
 		# Switching between categories
-		$('.category').click (e) ->
+		###$('.category').click (e) ->
 			e.preventDefault()
 
 			category = $(this).attr('id').split('_')[1]
 
-			Controller.loadCategory( category )
+			Controller.loadCategory( category )###
 
 		# Clicking on a favorite star
 		$('#menu li .favorite_toggle').live 'click', ->
