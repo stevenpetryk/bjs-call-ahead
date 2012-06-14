@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120613123727) do
+ActiveRecord::Schema.define(:version => 20120614175428) do
 
   create_table "categories", :force => true do |t|
     t.string "name"
@@ -50,6 +50,14 @@ ActiveRecord::Schema.define(:version => 20120613123727) do
     t.string  "street"
     t.string  "city"
     t.string  "state"
+  end
+
+  create_table "options", :force => true do |t|
+    t.string  "name"
+    t.string  "shortname"
+    t.string  "option_type"
+    t.integer "parent_id"
+    t.integer "item_id"
   end
 
 end

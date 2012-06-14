@@ -13,6 +13,9 @@ gem 'bcrypt-ruby'
 # HAML
 gem 'haml-rails'
 
+# Acts as Tree for Option model
+gem 'acts_as_tree_rails3'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

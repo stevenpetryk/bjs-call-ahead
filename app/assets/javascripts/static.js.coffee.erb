@@ -1,3 +1,4 @@
+# Allow MVC export
 root = exports ? this
 
 $(document).ready ->
@@ -19,8 +20,8 @@ root.View =
 		# Initialize viewport height
 		@fixInfinityEdges()
 
-		# Load the first category
-		# Controller.loadCategory(1)
+		# Load the first category by clicking
+		$('.category:first-child a').trigger('click')
 
 		# Bind events
 		@bindAll()
@@ -35,6 +36,10 @@ root.View =
 
 		# Window resizing
 		$(window).resize @fixInfinityEdges
+
+		# Clicking on a menu item
+		$('#menu li').live 'click', ->
+			Controller.addItemToOrder $(this).attr('id').split('_')[1]
 
 	# Highlights current #category li
 	highlightCategory: (id) ->
@@ -61,11 +66,6 @@ root.View =
 			.attr('src', srcs[toggle.toString()])
 
 root.Controller = 
-	loadCategory: (id) ->
-		Model.findCategory id, (data) ->
-			View.populateMenu(data)
-			View.highlightCategory(id)
-
 	setFavorite: (itemid, toggle) ->
 		srcs = {
 			'true' : '<%= asset_path 'favorited.png' %>'
@@ -79,6 +79,10 @@ root.Controller =
 
 		View.toggleStar(itemid, toggle)
 
+	addItemToOrder: (itemid) ->
+		Model.addItemToOrder itemid, (data) ->
+			alert('boo')
+
 root.Model = 
 	addFavorite: (id) ->
 		$.post '/favorites',
@@ -90,3 +94,8 @@ root.Model =
         type: 'post',
         dataType: 'script',
         data: { '_method': 'delete' }
+
+	addItemToOrder: (itemid, callback) ->
+  	alert(itemid)
+		#TODO_______________________________________________________________________
+	
