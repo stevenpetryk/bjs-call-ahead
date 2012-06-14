@@ -2,7 +2,7 @@
 	%ul
 		= render @categories
 	%ul
-		%li= link_to "Favorites", '#', id: 'category_favorites', class: 'category'
+		%li= link_to "Favorites", favorites_path, id: 'category_favorites', class: 'category', remote: true
 	%ul
 		%li= link_to 'Log out', 'session', :confirm => 'Are you sure?', :method => :delete
 

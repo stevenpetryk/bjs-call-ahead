@@ -1,1 +1,1 @@
-%li= link_to category.name, category_items_path(category), remote: true
+= content_tag_for(:li, category) { link_to category.name, category_items_path(category), remote: true }
