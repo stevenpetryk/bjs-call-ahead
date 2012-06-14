@@ -1,0 +1,19 @@
+/ <li id="item_3">
+/ 	<div class="header">
+/ 		<h1>BJ's Premium Boneless Wings and Sauces</h1>
+/ 		<p class="price">
+/ 			<a class="favorite_toggle">
+/ 				<img src="/assets/notfavorited.png"></a>
+/ 			$8.95
+/ 		</p>
+/ 	</div>
+/ 	<p class="desc">Ten boneless wings with your choice of BJ's signature sauces and served with a side of ranch dressing.</p></li>
+
+%li(id="item_#{item.id}")
+	.header
+		%h1= item.name
+		%p.price
+			%a.favorite_toggle
+				%img(src="/assets/notfavorited.png")/
+			= item.price
+	%p.desc= item.description
