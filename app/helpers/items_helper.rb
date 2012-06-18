@@ -1,5 +1,5 @@
 module ItemsHelper
-	def favorites_link_for(item)
+	def favorites_image_path_for(item)
 		if item.favorite
 			asset_path 'favorited.png' 
 		else

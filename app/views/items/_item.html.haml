@@ -3,6 +3,6 @@
 		%h1= raw process_disclaimer(item.name)
 		%p.price
 			%a.favorite_toggle
-				%img(src="#{favorites_link_for item}")/
+				%img(src="#{favorites_image_path_for item}")/
 			= number_to_currency item.price, unit: '$'
 	%p.desc= raw item.description
