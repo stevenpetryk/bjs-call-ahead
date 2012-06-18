@@ -7,7 +7,7 @@ class Item < ActiveRecord::Base
   has_many :favorites
   has_many :favorites_customers, through: :favorites, source: :customer
 
-  has_many :options
+  has_and_belongs_to_many :options
   
   def favorite
   	favorites_customers.exists?(current_customer.id)
