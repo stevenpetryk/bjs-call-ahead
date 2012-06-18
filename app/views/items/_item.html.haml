@@ -5,4 +5,4 @@
 			%a.favorite_toggle
 				%img(src="#{favorites_link_for item}")/
 			= number_to_currency item.price, unit: '$'
-	%p.desc= item.description
+	%p.desc= raw item.description
