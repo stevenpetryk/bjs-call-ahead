@@ -8,6 +8,7 @@ class FavoritesController < ApplicationController
 
 		render nothing: true
 	end
+	
 	def destroy
 		# Destroy the favorite based on the request
 		Favorite.where(

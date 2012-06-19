@@ -19,7 +19,7 @@ class ItemsController < ApplicationController
 	def favorites
 		@items = current_customer.favorite_items
 		respond_to do |format|
-			format.json { render json: @items.to_json(except: :category_id, methods: [ :favorite ]) }
+			format.js { render 'items/index.js.coffee.erb' }
 		end
 	end
 

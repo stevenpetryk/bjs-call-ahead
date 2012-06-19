@@ -12,9 +12,6 @@ $(document).ready ->
 	View.init()
 
 root.View = 
-	# Pattern for disclaimer matching
-	disclaimerPattern: /\ \[\*\=(.+)\]/
-
 	# Initializes the view in its entirety
 	init: ->
 		# Initialize viewport height
@@ -29,8 +26,10 @@ root.View =
 	# Binds all events
 	bindAll: ->
 		# Clicking on a favorite star
-		$('#menu li .favorite_toggle').live 'click', ->
-			itemid = $(this).closest('li').attr('id').split('_')[1]
+		$('#menu li .favorite_toggle').live 'click', (e) ->
+			e.stopPropagation()
+
+			itemid = $(this).closest('li').data('id')
 
 			Controller.setFavorite(itemid, !$(this).data('checked'))
 
@@ -96,6 +95,5 @@ root.Model =
         data: { '_method': 'delete' }
 
 	addItemToOrder: (itemid, callback) ->
-  	alert(itemid)
-		#TODO_______________________________________________________________________
+  	
 	
